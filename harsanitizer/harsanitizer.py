@@ -18,8 +18,12 @@
 import os
 import json
 import re
-import urllib2
+import urllib3
 
+try:
+  basestring
+except NameError:
+  basestring = str
 
 # Config local/remote file locations
 CURRENT_DIR = os.path.abspath("./")
@@ -604,7 +608,7 @@ class HarSanitizer(object):
       raise TypeError("'har' must be a Har object")
 
     if WORDLIST_PATH[:4] == "http":
-      wordlist_json = json.loads(urllib2.urlopen(WORDLIST_PATH).read())
+      wordlist_json = json.loads(urllib3.urlopen(WORDLIST_PATH).read())
       scrub_wordlist = self.load_wordlist(wordlist=wordlist_json)
     else:
       scrub_wordlist = self.load_wordlist(wordlist_path=WORDLIST_PATH)
